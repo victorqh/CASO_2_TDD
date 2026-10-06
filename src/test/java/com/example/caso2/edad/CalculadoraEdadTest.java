@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CalculadoraEdadTest {
 
@@ -37,5 +38,17 @@ class CalculadoraEdadTest {
 
         assertEquals(26, edad);
     }
-    //RED PRUEBA ERRADA
+
+    @Test
+    void test_fecha_nacimiento_posterior_a_la_actual_lanza_excepcion() {
+        LocalDate nacimiento = LocalDate.of(2027, 1, 1);
+        LocalDate hoy = LocalDate.of(2026, 9, 30);
+
+        IllegalArgumentException excepcion = assertThrows(
+                IllegalArgumentException.class,
+                () -> CalculadoraEdad.calcularEdad(nacimiento, hoy));
+
+        assertEquals("La fecha de nacimiento no puede ser posterior a la fecha actual",
+                excepcion.getMessage());
+    }
 }
