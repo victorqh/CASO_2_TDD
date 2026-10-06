@@ -40,7 +40,7 @@ class CalculadoraEdadTest {
     }
 
     @Test
-    void test_fecha_nacimiento_posterior_a_la_actual_lanza_excepcion() {
+    void test_fecha_nacimiento_futura_lanza_excepcion() {
         LocalDate nacimiento = LocalDate.of(2027, 1, 1);
         LocalDate hoy = LocalDate.of(2026, 9, 30);
 
@@ -50,5 +50,35 @@ class CalculadoraEdadTest {
 
         assertEquals("La fecha de nacimiento no puede ser posterior a la fecha actual",
                 excepcion.getMessage());
+    }
+
+    @Test
+    void test_bisiesto_un_dia_antes_del_cumpleanios() {
+        LocalDate nacimiento = LocalDate.of(2004, 2, 29);
+        LocalDate hoy = LocalDate.of(2025, 2, 28);
+
+        int edad = CalculadoraEdad.calcularEdad(nacimiento, hoy);
+
+        assertEquals(20, edad);
+    }
+
+    @Test
+    void test_bisiesto_cumple_el_1_de_marzo() {
+        LocalDate nacimiento = LocalDate.of(2004, 2, 29);
+        LocalDate hoy = LocalDate.of(2025, 3, 1);
+
+        int edad = CalculadoraEdad.calcularEdad(nacimiento, hoy);
+
+        assertEquals(21, edad);
+    }
+
+    @Test
+    void test_bisiesto_en_anio_bisiesto() {
+        LocalDate nacimiento = LocalDate.of(2004, 2, 29);
+        LocalDate hoy = LocalDate.of(2028, 2, 29);
+
+        int edad = CalculadoraEdad.calcularEdad(nacimiento, hoy);
+
+        assertEquals(24, edad);
     }
 }
